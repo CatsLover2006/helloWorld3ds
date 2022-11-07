@@ -1,4 +1,4 @@
-// 2048 On 3DS
+// A Hello World for 3DS
 // By Half-Qilin AKA Hail
 
 #include <citro2d.h>
@@ -61,11 +61,6 @@ int main(int argc, char* argv[]) {
     u32 clrTop = C2D_Color32(rand()%256, rand()%256, rand()%256, 0xFF);
     u32 clrBottom = C2D_Color32(rand()%256, rand()%256, rand()%256, 0xFF);
 	
-	// Create Screens
-    C3D_RenderTarget * top_main = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
-    C3D_RenderTarget * bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
-	GX_TRANSFER_SCALE(GX_TRANSFER_SCALE_XY);
-	
 	// Wide mode
     Result res = cfguInit();
     if (R_SUCCEEDED(res)) {
@@ -77,6 +72,11 @@ int main(int argc, char* argv[]) {
     if (consoleModel == 3) wideModifier = 1;
 	if (serial == 0) wideModifier = 1;
     gfxSetWide(wideModifier == 2);
+	
+	// Create Screens
+    C3D_RenderTarget * top_main = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
+    C3D_RenderTarget * bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
+	GX_TRANSFER_SCALE(GX_TRANSFER_SCALE_XY);
 	
 	// Booleans
 	bool lFromLeft = true;
