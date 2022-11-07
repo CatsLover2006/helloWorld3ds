@@ -1,0 +1,9 @@
+build/
+build/*
+romfs/
+romfs/*
+*.elf
+*.smdh
+*.3dsx
+*.3ds
+*.cia
