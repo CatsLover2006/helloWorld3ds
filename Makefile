@@ -45,8 +45,8 @@ GFXBUILD		:=	$(ROMFS)/gfx
 #APP_TITLE		:=	2048
 APP_TITLE		:=	Hello World 3DS
 APP_AUTHOR		:=	Hail (Half-Qilin)
-#APP_DESCRIPTION	:=	One of many 2048 ports. (Built with citro2d, libctru & devkitARM)
-#ICON 			:=  icon.png
+APP_DESCRIPTION	:=	One of many Hello Worlds. (Built with citro2d, libctru & devkitARM)
+ICON 			:=  icon.png
 #SMOL_ICON 		:=  smol_icon.png
 
 #---------------------------------------------------------------------------------

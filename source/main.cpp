@@ -10,14 +10,8 @@
 #define BOTTOM_SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
 
-static C2D_Font font300;
-static C2D_Font font400;
-static C2D_Font font500;
-static C2D_Font font600;
-static C2D_Font font700;
-static C2D_Font font800;
-static C2D_Font font900;
-static double pi = acos(-1.0);
+static C2D_Font fontMain;
+static C2D_Font fontJP;
 
 u8 consoleModel = 3;
 u8 sysRegion = CFG_REGION_USA;
@@ -35,31 +29,14 @@ int main(int argc, char* argv[]) {
 	
 	// Vars
 	double animTimer = 0, botmTimer = 0;
-    touchPosition touch;
-	u32 kDown, kHeld, kUp;
+	u32 kDown;
 	
 	// Load Fonts
-	font300 = C2D_FontLoad("romfs:/gfx/Figtree-Light.bcfnt");
-	font400 = C2D_FontLoad("romfs:/gfx/Figtree-Regular.bcfnt");
-	font500 = C2D_FontLoad("romfs:/gfx/Figtree-Medium.bcfnt");
-	font600 = C2D_FontLoad("romfs:/gfx/Figtree-SemiBold.bcfnt");
-	font700 = C2D_FontLoad("romfs:/gfx/Figtree-Bold.bcfnt");
-	font800 = C2D_FontLoad("romfs:/gfx/Figtree-ExtraBold.bcfnt");
-	font900 = C2D_FontLoad("romfs:/gfx/Figtree-Black.bcfnt");
+	fontMain = C2D_FontLoad("romfs:/gfx/Figtree-SemiBold.bcfnt");
+	fontJP = C2D_FontLoad("romfs:/gfx/Kosugi-Regular.bcfnt");
 	
 	// Font Buffers
-	C2D_TextBuf hiWorld = C2D_TextBufNew(11);
-	
-	// Prepare Text
-	C2D_Text hiText;
-	C2D_TextFontParse(&hiText, font800, hiWorld, "Hello World!");
-	C2D_TextOptimize(&hiText);
-	
-    // Create colors
-    u32 clrClear = C2D_Color32(230, 234, 235, 0xFF);
-    u32 clrWhite = C2D_Color32(255, 255, 255, 0xFF);
-    u32 clrTop = C2D_Color32(rand()%256, rand()%256, rand()%256, 0xFF);
-    u32 clrBottom = C2D_Color32(rand()%256, rand()%256, rand()%256, 0xFF);
+	C2D_TextBuf hiWorld = C2D_TextBufNew(50);
 	
 	// Wide mode
     Result res = cfguInit();
@@ -73,10 +50,21 @@ int main(int argc, char* argv[]) {
 	if (serial == 0) wideModifier = 1;
     gfxSetWide(wideModifier == 2);
 	
+	// Prepare Text
+	C2D_Text hiText;
+	if (sysRegion == CFG_REGION_JPN) C2D_TextFontParse(&hiText, fontJP, hiWorld, "こんにちは");
+	else C2D_TextFontParse(&hiText, fontMain, hiWorld, "Hello World!");
+	C2D_TextOptimize(&hiText);
+	
+    // Create colors
+    u32 clrClear = C2D_Color32(230, 234, 235, 0xFF);
+    u32 clrWhite = C2D_Color32(255, 255, 255, 0xFF);
+    u32 clrTop = C2D_Color32(rand()%256, rand()%256, rand()%256, 0xFF);
+    u32 clrBottom = C2D_Color32(rand()%256, rand()%256, rand()%256, 0xFF);
+	
 	// Create Screens
     C3D_RenderTarget * top_main = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
     C3D_RenderTarget * bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
-	GX_TRANSFER_SCALE(GX_TRANSFER_SCALE_XY);
 	
 	// Booleans
 	bool lFromLeft = true;
@@ -104,10 +92,7 @@ int main(int argc, char* argv[]) {
 		
 		// Input
 		hidScanInput();
-        hidTouchRead(&touch);
 		kDown = hidKeysDown();
-		kHeld = hidKeysHeld();
-		kUp = hidKeysUp();
 		
 		// Exit
 		if (kDown & KEY_START) break;
@@ -148,13 +133,8 @@ int main(int argc, char* argv[]) {
 	}
 	
 	// Free Fonts
-	C2D_FontFree(font300);
-	C2D_FontFree(font400);
-	C2D_FontFree(font500);
-	C2D_FontFree(font600);
-	C2D_FontFree(font700);
-	C2D_FontFree(font800);
-	C2D_FontFree(font900);
+	C2D_FontFree(fontJP);
+	C2D_FontFree(fontMain);
 	
 	return 0;
 }
