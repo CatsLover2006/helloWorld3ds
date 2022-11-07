@@ -14,7 +14,7 @@ static C2D_Font fontMain;
 static C2D_Font fontJP;
 
 u8 consoleModel = 3;
-u8 sysRegion = CFG_REGION_USA;
+u8 lang = CFG_LANGUAGE_EN;
 u8 serial = 0;
 u8 wideModifier = 2;
 
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 	// Wide mode
     Result res = cfguInit();
     if (R_SUCCEEDED(res)) {
-        CFGU_SecureInfoGetRegion(&sysRegion);
+		CFGU_GetSystemLanguage(&lang);
         CFGU_GetSystemModel(&consoleModel);
 		CFGI_SecureInfoGetSerialNumber(&serial);
         cfguExit();
@@ -52,8 +52,17 @@ int main(int argc, char* argv[]) {
 	
 	// Prepare Text
 	C2D_Text hiText;
-	if (sysRegion == CFG_REGION_JPN) C2D_TextFontParse(&hiText, fontJP, hiWorld, "こんにちは");
-	else C2D_TextFontParse(&hiText, fontMain, hiWorld, "Hello World!");
+	switch(lang) {
+		case CFG_LANGUAGE_JP:
+			C2D_TextFontParse(&hiText, fontJP, hiWorld, "こんにちは");
+			break;
+		case CFG_LANGUAGE_ES:
+			C2D_TextFontParse(&hiText, fontMain, hiWorld, "Hola Mundo!");
+			break;
+		default:
+			C2D_TextFontParse(&hiText, fontMain, hiWorld, "Hello World!");
+			break;
+	}
 	C2D_TextOptimize(&hiText);
 	
     // Create colors
