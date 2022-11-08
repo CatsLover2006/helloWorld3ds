@@ -144,6 +144,14 @@ int main(int argc, char* argv[]) {
 	// Free Fonts
 	C2D_FontFree(fontJP);
 	C2D_FontFree(fontMain);
+
+    // Deinit Graphics
+    C2D_Fini();
+    C3D_Fini();
+    gfxExit();
+	
+	// Exit ROM
+    romfsExit();
 	
 	return 0;
 }
